@@ -1,3 +1,14 @@
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+
+import { OrderLists } from './pages';
+
 export default function Router() {
-  return;
+  const router = createBrowserRouter([
+    {
+      path: '/',
+      element: <OrderLists />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }

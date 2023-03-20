@@ -35,10 +35,40 @@
   },
   "plugins": ["react", "@typescript-eslint", "import"],
   "rules": {
+    "no-console": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "padding-line-between-statements": [
       "error",
       { "blankLine": "always", "prev": "*", "next": "return" }
     ],
-    "import/no-unresolved": "error"
+    "import/no-unresolved": "error",
+    "import/order": [
+      "error",
+      {
+        "groups": [
+          "builtin",
+          "external",
+          "internal",
+          ["parent", "sibling", "index"],
+          "type",
+          "unknown"
+        ],
+        "pathGroups": [
+          { "pattern": "react", "group": "builtin", "position": "after" },
+          {
+            "pattern": "react-dom/client",
+            "group": "builtin",
+            "position": "after"
+          }
+        ],
+
+        "pathGroupsExcludedImportTypes": [],
+        "newlines-between": "always",
+        "alphabetize": {
+          "order": "asc",
+          "caseInsensitive": true
+        }
+      }
+    ]
   }
 }
