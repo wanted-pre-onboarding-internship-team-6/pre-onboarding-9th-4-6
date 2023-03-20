@@ -1,5 +1,5 @@
 import { UserOutlined } from '@ant-design/icons';
-import { Button, Checkbox, Col, Form, Input, Row, Select } from 'antd';
+import { Button, Col, Input, Row, Select } from 'antd';
 
 import {
   RowMargin,
@@ -9,8 +9,6 @@ import {
   SearchBtnStyle,
 } from 'styles/SearchBar';
 
-import type { CheckboxValueType } from 'antd/es/checkbox/Group';
-
 const Option = Select.Option;
 
 const SearchBar = () => {
@@ -19,11 +17,11 @@ const SearchBar = () => {
     FALSE: false,
   };
 
-  const onFinish = (fieldsValue) => {};
+  const handleSearchClick = () => {};
 
-  const onConditionChange = (value) => {};
+  const onSelectChange = () => {};
 
-  const onChange = (list: CheckboxValueType[]) => {};
+  const onInputChange = () => {};
 
   return (
     <SearchContainer>
@@ -58,10 +56,15 @@ const SearchBar = () => {
                 <SearchBarFontStyle>주문처리상태</SearchBarFontStyle>
               </Col>
               <Col>
-                <Select style={{ width: '150px', marginRight: '5px' }}>
-                  {Object.keys(OrderStatus).map((el) => (
-                    <Option key={el}>{OrderStatus[el]}</Option>
-                  ))}
+                <Select
+                  style={{ width: '150px', marginRight: '5px' }}
+                  onChange={onSelectChange}>
+                  <Option key={'true'} value={true}>
+                    TRUE
+                  </Option>
+                  <Option key={'false'} value={false}>
+                    FALSE
+                  </Option>
                 </Select>
               </Col>
             </Flex>
