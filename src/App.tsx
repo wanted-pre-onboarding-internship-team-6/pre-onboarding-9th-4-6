@@ -1,3 +1,5 @@
+import UserOrdersPage from './pages/UserOrdersPage';
+
 export default function App() {
-  return <div></div>;
+  return <UserOrdersPage />;
 }
