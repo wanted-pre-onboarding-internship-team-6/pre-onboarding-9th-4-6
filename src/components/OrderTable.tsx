@@ -14,10 +14,8 @@ interface Props {
 
 export default function OrderTable({ orderData }: Props) {
   const { totalOrder, orders } = orderData;
-
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order } = Object.fromEntries([...searchParams]);
-
+  const { page, sort, order, filter } = Object.fromEntries([...searchParams]);
   const totalPageCount = Math.ceil(totalOrder / ORDER_PER_PAGE);
 
   function sortOrders(sort: string) {
@@ -31,6 +29,18 @@ export default function OrderTable({ orderData }: Props) {
 
   function setPage(page: number) {
     searchParams.set(QUERY_STRING.page, String(page));
+    setSearchParams(searchParams);
+  }
+
+  function filterOrders() {
+    if (filter === 'true') {
+      searchParams.set('filter', String(false));
+    } else searchParams.set('filter', String(true));
+    setSearchParams(searchParams);
+  }
+
+  function filterReset() {
+    searchParams.delete('filter');
     setSearchParams(searchParams);
   }
 
@@ -48,7 +58,10 @@ export default function OrderTable({ orderData }: Props) {
             <th onClick={() => sortOrders(ORDER_KEY.transactionTime)}>
               거래시간{sort === ORDER_KEY.transactionTime && sortIndicator}
             </th>
-            <th>주문처리상태</th>
+            <th>
+              <button onClick={() => filterOrders()}>주문처리상태</button>
+              <button onClick={() => filterReset()}>reset</button>
+            </th>
             <th>고객번호</th>
             <th>고객이름</th>
             <th>가격</th>

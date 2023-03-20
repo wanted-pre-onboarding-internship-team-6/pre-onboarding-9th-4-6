@@ -9,9 +9,10 @@ interface Props {
   page: string;
   sort: string;
   order: string;
+  filter: string | undefined;
 }
 
-export default async function getOrders({ page, sort, order }: Props) {
+export default async function getOrders({ page, sort, order, filter }: Props) {
   // const config = { params: { page, sort, order } };
   // const { data } = await axios.get<Order[]>(API_URL, config);
 
@@ -21,17 +22,27 @@ export default async function getOrders({ page, sort, order }: Props) {
     (order) => order.transaction_time.split(' ')[0] === TODAY,
   );
 
-  const totalOrder = todayOrders.length;
+  let totalOrder = todayOrders.length;
 
-  const sortedOrders = todayOrders
-    .sort((a: any, b: any) => {
-      if (a[sort] > b[sort]) return order === SORT_ORDER.asc ? 1 : -1;
+  let sortedOrders = todayOrders.sort((a: any, b: any) => {
+    if (a[sort] > b[sort]) return order === SORT_ORDER.asc ? 1 : -1;
 
-      if (a[sort] < b[sort]) return order === SORT_ORDER.asc ? -1 : 1;
+    if (a[sort] < b[sort]) return order === SORT_ORDER.asc ? -1 : 1;
 
-      return 0;
-    })
-    .slice((+page - 1) * ORDER_PER_PAGE, +page * ORDER_PER_PAGE);
+    return 0;
+  });
+
+  if (filter !== undefined) {
+    sortedOrders = sortedOrders.filter(
+      (order) => order.status === JSON.parse(filter),
+    );
+    totalOrder = sortedOrders.length;
+  }
+
+  sortedOrders = sortedOrders.slice(
+    (+page - 1) * ORDER_PER_PAGE,
+    +page * ORDER_PER_PAGE,
+  );
 
   return { totalOrder, orders: sortedOrders };
 }
