@@ -1,25 +1,26 @@
-import { useQuery } from '@tanstack/react-query';
+import { useEffect } from 'react';
 
-import { getOrders } from '@/api';
+import { useSearchParams } from 'react-router-dom';
+
 import { OrderTable } from '@/components';
+import { ORDER_KEY, QUERY_STRING, SORT_ORDER } from '@/constants';
+import { useOrders } from '@/hooks';
 
 export default function App() {
-  const {
-    isLoading,
-    isError,
-    data: orders,
-  } = useQuery({
-    queryKey: ['orders'],
-    queryFn: getOrders,
-    select: (data) =>
-      data.filter(
-        (order) => order.transaction_time.split(' ')[0] === '2023-03-08',
-      ),
-    refetchInterval: 1000 * 5,
-  });
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { page, sort, order } = Object.fromEntries([...searchParams]);
+
+  useEffect(() => {
+    if (!page) searchParams.set(QUERY_STRING.page, '1');
+    if (!sort) searchParams.set(QUERY_STRING.sort, ORDER_KEY.id);
+    if (!order) searchParams.set(QUERY_STRING.order, SORT_ORDER.asc);
+    setSearchParams(searchParams);
+  }, [order, page, sort, searchParams, setSearchParams]);
+
+  const { isLoading, isError, orderData } = useOrders({ page, sort, order });
 
   if (isLoading) return <div>Loading...</div>;
-  if (isError) return <div>Error</div>;
+  if (isError || !orderData) return <div>Error</div>;
 
-  return <OrderTable orders={orders} />;
+  return <OrderTable orderData={orderData} />;
 }
