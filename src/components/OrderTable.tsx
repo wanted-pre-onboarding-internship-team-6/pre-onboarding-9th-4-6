@@ -1,3 +1,5 @@
+import { FormEvent, useState } from 'react';
+
 import { useSearchParams } from 'react-router-dom';
 
 import {
@@ -13,6 +15,9 @@ interface Props {
 }
 
 export default function OrderTable({ orderData }: Props) {
+  const [user, setUser] = useState('');
+  const [orderStatus, setOrderStatus] = useState(false);
+
   const { totalOrder, orders } = orderData;
 
   const [searchParams, setSearchParams] = useSearchParams();
@@ -36,22 +41,59 @@ export default function OrderTable({ orderData }: Props) {
 
   const sortIndicator = order === SORT_ORDER.asc ? '오름차순' : '내림차순';
 
+  const userOnChange = (e: any) => {
+    setUser(e.target.value);
+  };
+
+  const searchUserName = (e: FormEvent) => {
+    e.preventDefault();
+    searchParams.set(QUERY_STRING.userName, user);
+    setSearchParams(searchParams);
+  };
+
+  const findCompletedOrder = () => {
+    setOrderStatus((prevState) => !prevState);
+    const nextStatus = orderStatus === false ? 'false' : 'true';
+
+    searchParams.set(QUERY_STRING.status, nextStatus);
+    setSearchParams(searchParams);
+  };
+
+  const deleteQuery = (key: string) => {
+    searchParams.delete(key);
+    setSearchParams(searchParams);
+  };
+
   return (
     <>
       <div>총 주문수: {totalOrder}</div>
+
+      <form onSubmit={searchUserName}>
+        <input type="text" value={user} onChange={userOnChange} />
+        <button type="submit">검색</button>
+      </form>
+      <button onClick={() => deleteQuery('status')}>주문상태 초기화</button>
       <table>
         <thead>
           <tr>
-            <th onClick={() => sortOrders(ORDER_KEY.id)}>
-              주문번호{sort === ORDER_KEY.id && sortIndicator}
-            </th>
-            <th onClick={() => sortOrders(ORDER_KEY.transactionTime)}>
-              거래시간{sort === ORDER_KEY.transactionTime && sortIndicator}
-            </th>
-            <th>주문처리상태</th>
-            <th>고객번호</th>
-            <th>고객이름</th>
-            <th>가격</th>
+            {orders.length === 0 ? (
+              <th>
+                <h3>검색된 데이터가 없습니다.</h3>
+              </th>
+            ) : (
+              <>
+                <th onClick={() => sortOrders(ORDER_KEY.id)}>
+                  주문번호{sort === ORDER_KEY.id && sortIndicator}
+                </th>
+                <th onClick={() => sortOrders(ORDER_KEY.transactionTime)}>
+                  거래시간{sort === ORDER_KEY.transactionTime && sortIndicator}
+                </th>
+                <th onClick={() => findCompletedOrder()}>주문처리상태</th>
+                <th>고객번호</th>
+                <th>고객이름</th>
+                <th>가격</th>
+              </>
+            )}
           </tr>
         </thead>
         <tbody>

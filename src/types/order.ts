@@ -6,7 +6,7 @@ export interface OrderData {
 export interface Order {
   id: number;
   transaction_time: string;
-  status: boolean;
+  status: string;
   customer_id: number;
   customer_name: string;
   currency: string;

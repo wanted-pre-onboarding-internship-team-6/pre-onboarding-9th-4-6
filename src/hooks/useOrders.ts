@@ -7,6 +7,8 @@ interface Params {
   page: string;
   sort: string;
   order: string;
+  status: string;
+  userName: string;
 }
 
 export default function useOrders(params: Params) {
