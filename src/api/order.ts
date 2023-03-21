@@ -1,26 +1,47 @@
 import axios from 'axios';
 
-import { ORDER_PER_PAGE, SORT_ORDER, TODAY } from '@/constants';
+import { ORDER_PER_PAGE, SORT_ORDER, TODAY, DEFALUT } from '@/constants';
 import { Order } from '@/types/order';
 
-const API_URL = import.meta.env.VITE_API_URL;
+// const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = '/mock_data.json';
 
 interface Props {
   page: string;
   sort: string;
   order: string;
+  filter: string;
+  name: string;
 }
 
-export default async function getOrders({ page, sort, order }: Props) {
+export default async function getOrders({
+  page,
+  sort,
+  order,
+  filter,
+  name,
+}: Props) {
   // const config = { params: { page, sort, order } };
   // const { data } = await axios.get<Order[]>(API_URL, config);
 
   const { data: orders } = await axios.get<Order[]>(API_URL);
 
-  const todayOrders = orders.filter(
+  let todayOrders = orders.filter(
     (order) => order.transaction_time.split(' ')[0] === TODAY,
   );
 
+  // 이름 필터
+  if (name !== DEFALUT) {
+    todayOrders = todayOrders.filter(
+      (order) => String(order.customer_name) === name,
+    );
+  }
+  //주문 처리상태 필터
+  if (filter !== DEFALUT) {
+    todayOrders = todayOrders.filter(
+      (order) => String(order.status) === filter,
+    );
+  }
   const totalOrder = todayOrders.length;
 
   const sortedOrders = todayOrders

@@ -9,12 +9,16 @@ export const QUERY_STRING = {
   page: 'page',
   sort: 'sort',
   order: 'order',
+  filter: 'filter',
+  name: 'name',
 };
 
 export const SORT_ORDER = {
   asc: 'asc',
   desc: 'desc',
 } as const;
+
+export const DEFALUT = 'default';
 
 export const TODAY = '2023-03-08';
 

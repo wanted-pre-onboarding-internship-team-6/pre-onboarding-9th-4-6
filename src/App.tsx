@@ -3,21 +3,32 @@ import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
 import { OrderTable } from '@/components';
-import { ORDER_KEY, QUERY_STRING, SORT_ORDER } from '@/constants';
+import { ORDER_KEY, QUERY_STRING, SORT_ORDER, DEFALUT } from '@/constants';
 import { useOrders } from '@/hooks';
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order } = Object.fromEntries([...searchParams]);
+  const { page, sort, order, filter, name } = Object.fromEntries([
+    ...searchParams,
+  ]);
 
   useEffect(() => {
     if (!page) searchParams.set(QUERY_STRING.page, '1');
     if (!sort) searchParams.set(QUERY_STRING.sort, ORDER_KEY.id);
     if (!order) searchParams.set(QUERY_STRING.order, SORT_ORDER.asc);
-    setSearchParams(searchParams);
-  }, [order, page, sort, searchParams, setSearchParams]);
+    if (!filter) searchParams.set(QUERY_STRING.filter, DEFALUT);
+    if (!name) searchParams.set(QUERY_STRING.name, DEFALUT);
 
-  const { isLoading, isError, orderData } = useOrders({ page, sort, order });
+    setSearchParams(searchParams);
+  }, [order, page, sort, filter, name, searchParams, setSearchParams]);
+
+  const { isLoading, isError, orderData } = useOrders({
+    page,
+    sort,
+    order,
+    filter,
+    name,
+  });
 
   if (isLoading) return <div>Loading...</div>;
   if (isError || !orderData) return <div>Error</div>;

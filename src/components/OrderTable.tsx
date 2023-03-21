@@ -5,6 +5,7 @@ import {
   ORDER_PER_PAGE,
   QUERY_STRING,
   ORDER_KEY,
+  DEFALUT,
 } from '@/constants';
 import { OrderData } from '@/types/order';
 
@@ -34,11 +35,24 @@ export default function OrderTable({ orderData }: Props) {
     setSearchParams(searchParams);
   }
 
+  function setFilter(filter: boolean | string) {
+    searchParams.set(QUERY_STRING.filter, String(filter));
+    setSearchParams(searchParams);
+  }
+
   const sortIndicator = order === SORT_ORDER.asc ? '오름차순' : '내림차순';
 
   return (
     <>
       <div>총 주문수: {totalOrder}</div>
+      <form action="/">
+        <input type="text" placeholder="고객이름" name="name" />
+        <button type="submit">검색</button>
+      </form>
+      <button onClick={() => setFilter(true)}>주문 처리 상태 O</button>
+      <button onClick={() => setFilter(false)}>주문 처리 상태 X</button>
+      <button onClick={() => setFilter(DEFALUT)}>초기화</button>
+
       <table>
         <thead>
           <tr>
