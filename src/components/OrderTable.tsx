@@ -8,6 +8,7 @@ import {
   ORDER_PER_PAGE,
   QUERY_STRING,
   ORDER_KEY,
+  INITIAL_PAGE,
 } from '@/constants';
 import { useOrders } from '@/hooks';
 import { debounce } from '@/utils';
@@ -50,7 +51,10 @@ export default function OrderTable() {
     const searchKeyword = e.target.value;
 
     if (!searchKeyword) searchParams.delete(QUERY_STRING.keyword);
-    else searchParams.set(QUERY_STRING.keyword, searchKeyword);
+    else {
+      searchParams.set(QUERY_STRING.page, INITIAL_PAGE);
+      searchParams.set(QUERY_STRING.keyword, searchKeyword);
+    }
     setSearchParams(searchParams);
   }
 

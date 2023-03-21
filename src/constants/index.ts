@@ -1,3 +1,5 @@
+export const INITIAL_PAGE = '1';
+
 export const ORDER_KEY = {
   id: 'id',
   transactionTime: 'transaction_time',
