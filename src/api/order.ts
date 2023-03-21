@@ -10,9 +10,16 @@ interface Props {
   sort: string;
   order: string;
   filter: string | undefined;
+  search: string | undefined;
 }
 
-export default async function getOrders({ page, sort, order, filter }: Props) {
+export default async function getOrders({
+  page,
+  sort,
+  order,
+  filter,
+  search,
+}: Props) {
   // const config = { params: { page, sort, order } };
   // const { data } = await axios.get<Order[]>(API_URL, config);
 
@@ -24,6 +31,7 @@ export default async function getOrders({ page, sort, order, filter }: Props) {
 
   let totalOrder = todayOrders.length;
 
+  // 정렬
   let sortedOrders = todayOrders.sort((a: any, b: any) => {
     if (a[sort] > b[sort]) return order === SORT_ORDER.asc ? 1 : -1;
 
@@ -32,10 +40,22 @@ export default async function getOrders({ page, sort, order, filter }: Props) {
     return 0;
   });
 
+  // 필터링
   if (filter !== undefined) {
     sortedOrders = sortedOrders.filter(
       (order) => order.status === JSON.parse(filter),
     );
+
+    totalOrder = sortedOrders.length;
+  }
+
+  //검색
+  if (search !== undefined) {
+    const regex = new RegExp(search, 'i');
+    sortedOrders = sortedOrders.filter((order) =>
+      regex.test(order.customer_name),
+    );
+
     totalOrder = sortedOrders.length;
   }
 

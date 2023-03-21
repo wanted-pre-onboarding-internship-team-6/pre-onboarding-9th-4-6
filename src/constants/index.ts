@@ -9,6 +9,8 @@ export const QUERY_STRING = {
   page: 'page',
   sort: 'sort',
   order: 'order',
+  filter: 'filter',
+  search: 'search',
 };
 
 export const SORT_ORDER = {

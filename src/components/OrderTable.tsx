@@ -34,13 +34,13 @@ export default function OrderTable({ orderData }: Props) {
 
   function filterOrders() {
     if (filter === 'true') {
-      searchParams.set('filter', String(false));
-    } else searchParams.set('filter', String(true));
+      searchParams.set(QUERY_STRING.filter, String(false));
+    } else searchParams.set(QUERY_STRING.filter, String(true));
     setSearchParams(searchParams);
   }
 
   function filterReset() {
-    searchParams.delete('filter');
+    searchParams.delete(QUERY_STRING.filter);
     setSearchParams(searchParams);
   }
 
