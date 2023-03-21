@@ -3,23 +3,31 @@ import axios from 'axios';
 import { ORDER_PER_PAGE, SORT_ORDER, TODAY } from '@/constants';
 import { Order } from '@/types/order';
 
-const API_URL = import.meta.env.VITE_API_URL;
+const API_URL = '/mock_data.json';
 
 interface Props {
   page: string;
   sort: string;
   order: string;
+  name: string;
 }
 
-export default async function getOrders({ page, sort, order }: Props) {
+export default async function getOrders({ page, sort, order, name }: Props) {
   // const config = { params: { page, sort, order } };
   // const { data } = await axios.get<Order[]>(API_URL, config);
 
   const { data: orders } = await axios.get<Order[]>(API_URL);
 
-  const todayOrders = orders.filter(
+  let todayOrders = orders.filter(
     (order) => order.transaction_time.split(' ')[0] === TODAY,
   );
+
+  // 이름 검색
+  if (name !== '') {
+    todayOrders = todayOrders.filter((order) =>
+      order.customer_name.includes(name),
+    );
+  }
 
   const totalOrder = todayOrders.length;
 
