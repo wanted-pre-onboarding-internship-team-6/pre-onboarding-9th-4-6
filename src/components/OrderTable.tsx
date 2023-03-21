@@ -9,15 +9,13 @@ import {
   QUERY_STRING,
   ORDER_KEY,
 } from '@/constants';
-import { OrderData } from '@/types/order';
+import { useOrders } from '@/hooks';
 import { debounce } from '@/utils';
 
-interface Props {
-  orderData: OrderData;
-}
+import OrderTableBody from './OrderTableBody';
 
-export default function OrderTable({ orderData }: Props) {
-  const { totalOrder, orders } = orderData;
+export default function OrderTable() {
+  const { isLoading, isError, orderData } = useOrders();
 
   const customerSearchRef = useRef<HTMLInputElement>(null);
 
@@ -25,8 +23,6 @@ export default function OrderTable({ orderData }: Props) {
   const { page, sort, order, isDone, keyword } = Object.fromEntries([
     ...searchParams,
   ]);
-
-  const totalPageCount = Math.ceil(totalOrder / ORDER_PER_PAGE);
 
   function sortOrders(sort: string) {
     const nextOrder =
@@ -66,10 +62,15 @@ export default function OrderTable({ orderData }: Props) {
     if (customerSearchRef.current && keyword) customerSearchRef.current.focus();
   }, [keyword]);
 
+  if (isLoading) return <div>Loading...</div>;
+  if (isError || !orderData) return <div>Error</div>;
+
+  const totalPageCount = Math.ceil(orderData.totalOrder / ORDER_PER_PAGE);
+
   return (
     <>
       <SearchBar>
-        총 주문: {totalOrder}건
+        총 주문: {orderData.totalOrder}건
         <input
           type="text"
           ref={customerSearchRef}
@@ -100,18 +101,7 @@ export default function OrderTable({ orderData }: Props) {
             <th>가격</th>
           </Tr>
         </Thead>
-        <Tbody>
-          {orders.map((order) => (
-            <Tr key={order.id}>
-              <td>{order.id}</td>
-              <td>{order.transaction_time}</td>
-              <td>{order.status ? 'O' : 'X'}</td>
-              <td>{order.customer_id}</td>
-              <td>{order.customer_name}</td>
-              <td>{order.currency}</td>
-            </Tr>
-          ))}
-        </Tbody>
+        <OrderTableBody />
       </Table>
       <Pagination>
         {Array.from({ length: totalPageCount }).map((_, i) => (
@@ -157,8 +147,6 @@ const Table = styled.table({
 const Thead = styled.thead({
   width: '100%',
 });
-
-const Tbody = styled.tbody({});
 
 const Tr = styled.tr({
   display: 'grid',

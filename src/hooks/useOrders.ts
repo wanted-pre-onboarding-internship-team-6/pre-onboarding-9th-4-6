@@ -1,24 +1,29 @@
 import { useQuery } from '@tanstack/react-query';
+import { useSearchParams } from 'react-router-dom';
 
 import { getOrders } from '@/api';
 import { QUERY_KEY } from '@/constants';
 
-interface Params {
-  page: string;
-  sort: string;
-  order: string;
-  isDone: string;
-  keyword: string;
-}
+export default function useOrders() {
+  const [searchParams] = useSearchParams();
+  const { page, sort, order, isDone, keyword } = Object.fromEntries([
+    ...searchParams,
+  ]);
 
-export default function useOrders(params: Params) {
   const {
     isLoading,
     isError,
     data: orderData,
   } = useQuery({
-    queryKey: [QUERY_KEY.orders, params],
-    queryFn: () => getOrders(params),
+    queryKey: [QUERY_KEY.orders, { page, sort, order, isDone, keyword }],
+    queryFn: () =>
+      getOrders({
+        page,
+        sort,
+        order,
+        isDone,
+        keyword,
+      }),
     staleTime: 1000 * 5,
     refetchInterval: 1000 * 5,
   });
