@@ -1,4 +1,4 @@
-import { ChangeEvent } from 'react';
+import { ChangeEvent, useEffect, useRef } from 'react';
 
 import { useSearchParams } from 'react-router-dom';
 
@@ -9,6 +9,7 @@ import {
   ORDER_KEY,
 } from '@/constants';
 import { OrderData } from '@/types/order';
+import { debounce } from '@/utils';
 
 interface Props {
   orderData: OrderData;
@@ -17,8 +18,12 @@ interface Props {
 export default function OrderTable({ orderData }: Props) {
   const { totalOrder, orders } = orderData;
 
+  const customerSearchRef = useRef<HTMLInputElement>(null);
+
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order, isDone } = Object.fromEntries([...searchParams]);
+  const { page, sort, order, isDone, keyword } = Object.fromEntries([
+    ...searchParams,
+  ]);
 
   const totalPageCount = Math.ceil(totalOrder / ORDER_PER_PAGE);
 
@@ -38,16 +43,40 @@ export default function OrderTable({ orderData }: Props) {
 
   function selectStatus(e: ChangeEvent<HTMLSelectElement>) {
     const status = e.target.value;
+
     if (status) searchParams.set(QUERY_STRING.isDone, status);
     else searchParams.delete(QUERY_STRING.isDone);
     setSearchParams(searchParams);
   }
 
+  function searchCustomer(e: ChangeEvent<HTMLInputElement>) {
+    const searchKeyword = e.target.value;
+
+    if (!searchKeyword) searchParams.delete(QUERY_STRING.keyword);
+    else searchParams.set(QUERY_STRING.keyword, searchKeyword);
+    setSearchParams(searchParams);
+  }
+
+  const debouncedSearchCustomer = debounce(searchCustomer, 400);
+
   const sortIndicator = order === SORT_ORDER.asc ? '오름차순' : '내림차순';
+
+  useEffect(() => {
+    if (customerSearchRef.current && keyword) customerSearchRef.current.focus();
+  }, [keyword]);
 
   return (
     <>
-      <div>총 주문수: {totalOrder}</div>
+      <div>
+        총 주문: {totalOrder}건
+        <input
+          type="text"
+          ref={customerSearchRef}
+          defaultValue={keyword}
+          placeholder="고객 이름 검색"
+          onChange={debouncedSearchCustomer}
+        />
+      </div>
       <table>
         <thead>
           <tr>

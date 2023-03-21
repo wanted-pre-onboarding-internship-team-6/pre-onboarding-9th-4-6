@@ -10,9 +10,16 @@ interface Props {
   sort: string;
   order: string;
   isDone: string;
+  keyword: string;
 }
 
-export default async function getOrders({ page, sort, order, isDone }: Props) {
+export default async function getOrders({
+  page,
+  sort,
+  order,
+  isDone,
+  keyword,
+}: Props) {
   // const config = { params: { page, sort, order } };
   // const { data } = await axios.get<Order[]>(API_URL, config);
 
@@ -28,6 +35,13 @@ export default async function getOrders({ page, sort, order, isDone }: Props) {
     filteredOrders = filteredOrders.filter(
       (order) => order.status === JSON.parse(isDone),
     );
+
+  if (keyword) {
+    const keywordPattern = new RegExp(keyword, 'i');
+    filteredOrders = filteredOrders.filter((order) =>
+      keywordPattern.test(order.customer_name),
+    );
+  }
 
   const totalOrder = filteredOrders.length;
 

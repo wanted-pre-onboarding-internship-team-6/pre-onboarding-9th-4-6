@@ -10,6 +10,7 @@ export const QUERY_STRING = {
   sort: 'sort',
   order: 'order',
   isDone: 'isDone',
+  keyword: 'keyword',
 } as const;
 
 export const SORT_ORDER = {

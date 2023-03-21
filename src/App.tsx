@@ -8,7 +8,9 @@ import { useOrders } from '@/hooks';
 
 export default function App() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order, isDone } = Object.fromEntries([...searchParams]);
+  const { page, sort, order, isDone, keyword } = Object.fromEntries([
+    ...searchParams,
+  ]);
 
   useEffect(() => {
     if (!page) searchParams.set(QUERY_STRING.page, '1');
@@ -22,6 +24,7 @@ export default function App() {
     sort,
     order,
     isDone,
+    keyword,
   });
 
   if (isLoading) return <div>Loading...</div>;
