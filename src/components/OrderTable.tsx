@@ -1,3 +1,5 @@
+import { ChangeEvent } from 'react';
+
 import { useSearchParams } from 'react-router-dom';
 
 import {
@@ -16,7 +18,7 @@ export default function OrderTable({ orderData }: Props) {
   const { totalOrder, orders } = orderData;
 
   const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order } = Object.fromEntries([...searchParams]);
+  const { page, sort, order, isDone } = Object.fromEntries([...searchParams]);
 
   const totalPageCount = Math.ceil(totalOrder / ORDER_PER_PAGE);
 
@@ -34,6 +36,13 @@ export default function OrderTable({ orderData }: Props) {
     setSearchParams(searchParams);
   }
 
+  function selectStatus(e: ChangeEvent<HTMLSelectElement>) {
+    const status = e.target.value;
+    if (status) searchParams.set(QUERY_STRING.isDone, status);
+    else searchParams.delete(QUERY_STRING.isDone);
+    setSearchParams(searchParams);
+  }
+
   const sortIndicator = order === SORT_ORDER.asc ? '오름차순' : '내림차순';
 
   return (
@@ -48,7 +57,14 @@ export default function OrderTable({ orderData }: Props) {
             <th onClick={() => sortOrders(ORDER_KEY.transactionTime)}>
               거래시간{sort === ORDER_KEY.transactionTime && sortIndicator}
             </th>
-            <th>주문처리상태</th>
+            <th>
+              주문처리상태
+              <select onChange={selectStatus} defaultValue={isDone}>
+                <option value="">전체</option>
+                <option value="true">O</option>
+                <option value="false">X</option>
+              </select>
+            </th>
             <th>고객번호</th>
             <th>고객이름</th>
             <th>가격</th>

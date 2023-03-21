@@ -7,6 +7,7 @@ interface Params {
   page: string;
   sort: string;
   order: string;
+  isDone: string;
 }
 
 export default function useOrders(params: Params) {
