@@ -9,24 +9,45 @@ interface Props {
   page: string;
   sort: string;
   order: string;
+  isDone: string;
+  keyword: string;
 }
 
-export default async function getOrders({ page, sort, order }: Props) {
+export default async function getOrders({
+  page,
+  sort,
+  order,
+  isDone,
+  keyword,
+}: Props) {
   // const config = { params: { page, sort, order } };
   // const { data } = await axios.get<Order[]>(API_URL, config);
 
   const { data: orders } = await axios.get<Order[]>(API_URL);
 
-  const todayOrders = orders.filter(
-    (order) => order.transaction_time.split(' ')[0] === TODAY,
+  let filteredOrders;
+
+  filteredOrders = orders.filter((order) =>
+    order.transaction_time.includes(TODAY),
   );
 
-  const totalOrder = todayOrders.length;
+  if (isDone !== undefined)
+    filteredOrders = filteredOrders.filter(
+      (order) => order.status === JSON.parse(isDone),
+    );
 
-  const sortedOrders = todayOrders
+  if (keyword) {
+    const keywordPattern = new RegExp(keyword, 'i');
+    filteredOrders = filteredOrders.filter((order) =>
+      keywordPattern.test(order.customer_name),
+    );
+  }
+
+  const totalOrder = filteredOrders.length;
+
+  const sortedOrders = filteredOrders
     .sort((a: any, b: any) => {
       if (a[sort] > b[sort]) return order === SORT_ORDER.asc ? 1 : -1;
-
       if (a[sort] < b[sort]) return order === SORT_ORDER.asc ? -1 : 1;
 
       return 0;
