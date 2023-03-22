@@ -1,0 +1,41 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`<Counter/> > mathch 1`] = `
+<div>
+  <div>
+    Loading...
+  </div>
+</div>
+`;
+
+exports[`<OrderTable /> > matches snapshot 1`] = `
+<div>
+  <div>
+    Loading...
+  </div>
+</div>
+`;
+
+exports[`<OrderTable /> > select match 1`] = `
+<div>
+  <select
+    data-testid="select"
+  >
+    <option
+      value=""
+    >
+      전체
+    </option>
+    <option
+      value="true"
+    >
+      O
+    </option>
+    <option
+      value="false"
+    >
+      X
+    </option>
+  </select>
+</div>
+`;

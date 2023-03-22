@@ -94,7 +94,10 @@ export default function OrderTable() {
             </th>
             <th>
               주문처리상태
-              <select onChange={selectStatus} defaultValue={isDone}>
+              <select
+                onChange={selectStatus}
+                defaultValue={isDone}
+                data-testid="select">
                 <option value="">전체</option>
                 <option value="true">O</option>
                 <option value="false">X</option>
@@ -110,6 +113,7 @@ export default function OrderTable() {
       <Pagination>
         {Array.from({ length: totalPageCount }).map((_, i) => (
           <button
+            data-testid="my-button"
             key={i}
             disabled={page === String(i + 1)}
             onClick={() => setPage(i + 1)}>
