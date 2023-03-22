@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { useSearchParams } from 'react-router-dom';
 
 import {
   SORT_ORDER,
@@ -10,52 +9,42 @@ import {
   ORDER_KEY,
   INITIAL_PAGE,
 } from '@/constants';
-import { useOrders } from '@/hooks';
+import { useOrders, useQueryString } from '@/hooks';
 import { debounce } from '@/utils';
 
 import OrderTableBody from './OrderTableBody';
 
 export default function OrderTable() {
   const { isLoading, isError, orderData } = useOrders();
+  const { getQueryString, setQueryString, deleteQueryString } =
+    useQueryString();
 
   const customerSearchRef = useRef<HTMLInputElement>(null);
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order, isDone, keyword } = Object.fromEntries([
-    ...searchParams,
-  ]);
+  const { page, sort, order, isDone, keyword } = getQueryString();
 
-  function sortOrders(sort: string) {
+  function sortOrders(nextSort: string, currOrder: string) {
     const nextOrder =
-      order === SORT_ORDER.asc ? SORT_ORDER.desc : SORT_ORDER.asc;
-
-    searchParams.set(QUERY_STRING.sort, sort);
-    searchParams.set(QUERY_STRING.order, nextOrder);
-    setSearchParams(searchParams);
+      currOrder === SORT_ORDER.asc ? SORT_ORDER.desc : SORT_ORDER.asc;
+    setQueryString({ sort: nextSort, order: nextOrder });
   }
 
   function setPage(page: number) {
-    searchParams.set(QUERY_STRING.page, String(page));
-    setSearchParams(searchParams);
+    setQueryString({ page: page.toString() });
   }
 
   function selectStatus(e: ChangeEvent<HTMLSelectElement>) {
     const status = e.target.value;
 
-    if (status) searchParams.set(QUERY_STRING.isDone, status);
-    else searchParams.delete(QUERY_STRING.isDone);
-    setSearchParams(searchParams);
+    if (status) setQueryString({ isDone: status });
+    else deleteQueryString([QUERY_STRING.isDone]);
   }
 
   function searchCustomer(e: ChangeEvent<HTMLInputElement>) {
     const searchKeyword = e.target.value;
 
-    if (!searchKeyword) searchParams.delete(QUERY_STRING.keyword);
-    else {
-      searchParams.set(QUERY_STRING.page, INITIAL_PAGE);
-      searchParams.set(QUERY_STRING.keyword, searchKeyword);
-    }
-    setSearchParams(searchParams);
+    if (!searchKeyword) deleteQueryString([QUERY_STRING.keyword]);
+    else setQueryString({ page: INITIAL_PAGE, keyword: searchKeyword });
   }
 
   const debouncedSearchCustomer = debounce(searchCustomer, 400);
@@ -86,10 +75,10 @@ export default function OrderTable() {
       <Table>
         <Thead>
           <Tr>
-            <th onClick={() => sortOrders(ORDER_KEY.id)}>
+            <th onClick={() => sortOrders(ORDER_KEY.id, order)}>
               주문번호 {sort === ORDER_KEY.id && sortIndicator}
             </th>
-            <th onClick={() => sortOrders(ORDER_KEY.transactionTime)}>
+            <th onClick={() => sortOrders(ORDER_KEY.transactionTime, order)}>
               거래시간 {sort === ORDER_KEY.transactionTime && sortIndicator}
             </th>
             <th>
