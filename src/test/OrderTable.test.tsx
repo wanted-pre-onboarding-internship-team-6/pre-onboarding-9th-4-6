@@ -1,11 +1,11 @@
-import { screen } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 
-// import OrderTable from '@/components/OrderTable';
+import OrderTable from '@/components/OrderTable';
 
 test('table rendering', () => {
-  // render(<OrderTable />);
+  render(<OrderTable />);
 
   const orderTh = screen.getByText('주문번호');
   const transactionTimeTh = screen.getByText('거래시간');
