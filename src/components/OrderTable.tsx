@@ -45,7 +45,7 @@ export default function OrderTable() {
     else setQueryString({ page: INITIAL_PAGE, keyword: searchKeyword });
   }
 
-  const debouncedSearchCustomer = debounce(searchCustomer, 400);
+  const debouncedSearchCustomer = debounce(searchCustomer, 600);
 
   const sortIndicator = order === SORT_ORDER.asc ? '▲' : '▼';
 
