@@ -9,3 +9,7 @@ export default function debounce<T extends (...args: any[]) => void>(
     timer = setTimeout(() => callback.apply(this, args), timeout);
   };
 }
+
+export function sum(a: any, b: any) {
+  return a + b;
+}
