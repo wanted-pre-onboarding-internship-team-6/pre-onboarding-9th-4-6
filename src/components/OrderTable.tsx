@@ -13,6 +13,7 @@ import { useOrders, useQueryString } from '@/hooks';
 import { debounce } from '@/utils';
 
 import OrderTableBody from './OrderTableBody';
+import OrderTableLoader from './OrderTableLoader';
 
 export default function OrderTable() {
   const { isLoading, isError, orderData } = useOrders();
@@ -55,7 +56,7 @@ export default function OrderTable() {
     if (customerSearchRef.current && keyword) customerSearchRef.current.focus();
   }, [keyword]);
 
-  if (isLoading) return <div>Loading...</div>;
+  if (isLoading) return <OrderTableLoader />;
   if (isError || !orderData) return <div>Error</div>;
 
   const totalPageCount = Math.ceil(orderData.totalOrder / ORDER_PER_PAGE);
@@ -63,7 +64,7 @@ export default function OrderTable() {
   return (
     <>
       <SearchBar>
-        총 주문: {orderData.totalOrder}건
+        <span>총 주문: {orderData.totalOrder}건</span>
         <input
           type="text"
           ref={customerSearchRef}
@@ -120,12 +121,11 @@ const SearchBar = styled.div({
   alignItems: 'end',
   fontSize: '20px',
   fontWeight: 'bold',
-  paddingTop: '48px',
   marginBottom: '20px',
 
   input: {
     width: '223px',
-    height: '48px',
+    height: '42px',
     fontSize: '24px',
     fontWeight: 'bold',
     paddingLeft: '11px',

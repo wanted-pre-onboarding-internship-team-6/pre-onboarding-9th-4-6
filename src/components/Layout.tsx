@@ -23,7 +23,7 @@ const Header = styled.header({
   fontSize: '48px',
   fontWeight: 'bold',
   borderBottom: '1px solid #000000',
-  marginBottom: '20px',
+  marginBottom: '68px',
 });
 
 const Main = styled.main({
