@@ -24,14 +24,20 @@ export default function OrderTableBody() {
   );
 }
 
-const Tr = styled.tr({
-  display: 'grid',
-  gridTemplateColumns: '1fr 2fr 1fr 1fr 2fr 1fr',
-  height: '48px',
+const Tr = styled.tr`
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr 1fr 2fr 1fr;
+  height: 48px;
+  &:nth-of-type(2n-1) {
+    background-color: #e2e2e2;
+  }
 
-  td: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-});
+  td {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .highlighted {
+    }
+  }
+`;

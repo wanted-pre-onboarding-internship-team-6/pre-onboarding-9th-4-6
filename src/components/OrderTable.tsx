@@ -76,22 +76,28 @@ export default function OrderTable() {
       <Table>
         <Thead>
           <Tr>
-            <th onClick={() => sortOrders(ORDER_KEY.id, order)}>
+            <ClickableTh
+              onClick={() => sortOrders(ORDER_KEY.id, order)}
+              role="button">
               주문번호 {sort === ORDER_KEY.id && sortIndicator}
-            </th>
-            <th onClick={() => sortOrders(ORDER_KEY.transactionTime, order)}>
+            </ClickableTh>
+            <ClickableTh
+              onClick={() => sortOrders(ORDER_KEY.transactionTime, order)}
+              role="button">
               거래시간 {sort === ORDER_KEY.transactionTime && sortIndicator}
-            </th>
+            </ClickableTh>
             <th>
-              주문처리상태
-              <select
-                onChange={selectStatus}
-                defaultValue={isDone}
-                data-testid="select">
-                <option value="">전체</option>
-                <option value="true">O</option>
-                <option value="false">X</option>
-              </select>
+              <div>
+                <span>주문처리상태</span>
+                <select
+                  onChange={selectStatus}
+                  defaultValue={isDone}
+                  data-testid="select">
+                  <option value="">전체</option>
+                  <option value="true">O</option>
+                  <option value="false">X</option>
+                </select>
+              </div>
             </th>
             <th>고객번호</th>
             <th>고객이름</th>
@@ -143,6 +149,17 @@ const Table = styled.table({
 
 const Thead = styled.thead({
   width: '100%',
+  borderBottom: '1px solid #000000',
+
+  th: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+const ClickableTh = styled.th({
+  cursor: 'pointer',
 });
 
 const Tr = styled.tr({
