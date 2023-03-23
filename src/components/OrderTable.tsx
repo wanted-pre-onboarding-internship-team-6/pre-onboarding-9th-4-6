@@ -36,7 +36,7 @@ export default function OrderTable() {
   function selectStatus(e: ChangeEvent<HTMLSelectElement>) {
     const status = e.target.value;
 
-    if (status) setQueryString({ isDone: status });
+    if (status) setQueryString({ page: INITIAL_PAGE, isDone: status });
     else deleteQueryString([QUERY_STRING.isDone]);
   }
 
