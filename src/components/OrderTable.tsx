@@ -1,7 +1,6 @@
 import { ChangeEvent, useEffect, useRef } from 'react';
 
 import styled from '@emotion/styled';
-import { useSearchParams } from 'react-router-dom';
 
 import {
   SORT_ORDER,
@@ -10,71 +9,56 @@ import {
   ORDER_KEY,
   INITIAL_PAGE,
 } from '@/constants';
-import { useOrders } from '@/hooks';
+import { useOrders, useQueryString } from '@/hooks';
 import { debounce } from '@/utils';
 
 import OrderTableBody from './OrderTableBody';
 
 export default function OrderTable() {
-  const { isLoading, isError, orderData } = useOrders();
-
   const customerSearchRef = useRef<HTMLInputElement>(null);
+  const { orderData } = useOrders();
+  const { getQueryString, setQueryString, deleteQueryString } =
+    useQueryString();
+  const { page, sort, order, isDone, keyword } = getQueryString();
 
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order, isDone, keyword } = Object.fromEntries([
-    ...searchParams,
-  ]);
-
-  function sortOrders(sort: string) {
+  function sortOrders(nextSort: string, currOrder: string) {
     const nextOrder =
-      order === SORT_ORDER.asc ? SORT_ORDER.desc : SORT_ORDER.asc;
-
-    searchParams.set(QUERY_STRING.sort, sort);
-    searchParams.set(QUERY_STRING.order, nextOrder);
-    setSearchParams(searchParams);
+      currOrder === SORT_ORDER.asc ? SORT_ORDER.desc : SORT_ORDER.asc;
+    setQueryString({ sort: nextSort, order: nextOrder });
   }
 
   function setPage(page: number) {
-    searchParams.set(QUERY_STRING.page, String(page));
-    setSearchParams(searchParams);
+    setQueryString({ page: page.toString() });
   }
 
   function selectStatus(e: ChangeEvent<HTMLSelectElement>) {
     const status = e.target.value;
 
-    if (status) searchParams.set(QUERY_STRING.isDone, status);
-    else searchParams.delete(QUERY_STRING.isDone);
-    setSearchParams(searchParams);
+    if (status) setQueryString({ page: INITIAL_PAGE, isDone: status });
+    else deleteQueryString([QUERY_STRING.isDone]);
   }
 
   function searchCustomer(e: ChangeEvent<HTMLInputElement>) {
     const searchKeyword = e.target.value;
 
-    if (!searchKeyword) searchParams.delete(QUERY_STRING.keyword);
-    else {
-      searchParams.set(QUERY_STRING.page, INITIAL_PAGE);
-      searchParams.set(QUERY_STRING.keyword, searchKeyword);
-    }
-    setSearchParams(searchParams);
+    if (!searchKeyword) deleteQueryString([QUERY_STRING.keyword]);
+    else setQueryString({ page: INITIAL_PAGE, keyword: searchKeyword });
   }
 
-  const debouncedSearchCustomer = debounce(searchCustomer, 400);
+  const debouncedSearchCustomer = debounce(searchCustomer, 600);
 
   const sortIndicator = order === SORT_ORDER.asc ? '▲' : '▼';
+
+  const totalPageCount = Math.ceil(orderData.totalOrder / ORDER_PER_PAGE);
 
   useEffect(() => {
     if (customerSearchRef.current && keyword) customerSearchRef.current.focus();
   }, [keyword]);
 
-  if (isLoading) return <div>Loading...</div>;
-  if (isError || !orderData) return <div>Error</div>;
-
-  const totalPageCount = Math.ceil(orderData.totalOrder / ORDER_PER_PAGE);
-
   return (
     <>
       <SearchBar>
-        총 주문: {orderData.totalOrder}건
+        <span>총 주문: {orderData.totalOrder}건</span>
         <input
           type="text"
           ref={customerSearchRef}
@@ -86,29 +70,35 @@ export default function OrderTable() {
       <Table>
         <Thead>
           <Tr>
-            <th onClick={() => sortOrders(ORDER_KEY.id)}>
+            <ClickableTh
+              onClick={() => sortOrders(ORDER_KEY.id, order)}
+              role="button">
               주문번호 {sort === ORDER_KEY.id && sortIndicator}
-            </th>
-            <th onClick={() => sortOrders(ORDER_KEY.transactionTime)}>
+            </ClickableTh>
+            <ClickableTh
+              onClick={() => sortOrders(ORDER_KEY.transactionTime, order)}
+              role="button">
               거래시간 {sort === ORDER_KEY.transactionTime && sortIndicator}
-            </th>
+            </ClickableTh>
             <th>
-              주문처리상태
-              <select
-                onChange={selectStatus}
-                defaultValue={isDone}
-                data-testid="select">
-                <option value="">전체</option>
-                <option value="true">O</option>
-                <option value="false">X</option>
-              </select>
+              <div>
+                <span>주문처리상태</span>
+                <select
+                  onChange={selectStatus}
+                  defaultValue={isDone}
+                  data-testid="select">
+                  <option value="">전체</option>
+                  <option value="true">O</option>
+                  <option value="false">X</option>
+                </select>
+              </div>
             </th>
             <th>고객번호</th>
             <th>고객이름</th>
             <th>가격</th>
           </Tr>
         </Thead>
-        <OrderTableBody />
+        <OrderTableBody orders={orderData.orders} />
       </Table>
       <Pagination>
         {Array.from({ length: totalPageCount }).map((_, i) => (
@@ -131,12 +121,11 @@ const SearchBar = styled.div({
   alignItems: 'end',
   fontSize: '20px',
   fontWeight: 'bold',
-  paddingTop: '48px',
   marginBottom: '20px',
 
   input: {
     width: '223px',
-    height: '48px',
+    height: '42px',
     fontSize: '24px',
     fontWeight: 'bold',
     paddingLeft: '11px',
@@ -154,6 +143,17 @@ const Table = styled.table({
 
 const Thead = styled.thead({
   width: '100%',
+  borderBottom: '1px solid #000000',
+
+  th: {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+
+const ClickableTh = styled.th({
+  cursor: 'pointer',
 });
 
 const Tr = styled.tr({

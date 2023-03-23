@@ -2,12 +2,13 @@ import axios from 'axios';
 
 import { ORDER_PER_PAGE, SORT_ORDER, TODAY } from '@/constants';
 import { Order } from '@/types/order';
+import { delay, throwErrorAtChance } from '@/utils';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 interface Props {
   page: string;
-  sort: string;
+  sort: keyof Order;
   order: string;
   isDone: string;
   keyword: string;
@@ -20,8 +21,8 @@ export default async function getOrders({
   isDone,
   keyword,
 }: Props) {
-  // const config = { params: { page, sort, order } };
-  // const { data } = await axios.get<Order[]>(API_URL, config);
+  await delay(1000);
+  throwErrorAtChance(10);
 
   const { data: orders } = await axios.get<Order[]>(API_URL);
 
@@ -46,7 +47,7 @@ export default async function getOrders({
   const totalOrder = filteredOrders.length;
 
   const sortedOrders = filteredOrders
-    .sort((a: any, b: any) => {
+    .sort((a: Order, b: Order) => {
       if (a[sort] > b[sort]) return order === SORT_ORDER.asc ? 1 : -1;
       if (a[sort] < b[sort]) return order === SORT_ORDER.asc ? -1 : 1;
 
@@ -56,26 +57,3 @@ export default async function getOrders({
 
   return { totalOrder, orders: sortedOrders };
 }
-
-// axios interceptor 타이핑 시도
-// axios.interceptors.response.use((res) => {
-//   const { page, sort, order } = res.config.params as Props;
-
-//   const todayOrders = res.data.filter(
-//     (order: any) => order.transaction_time.split(' ')[0] === '2023-03-08',
-//   );
-
-//   const totalOrder = todayOrders.length;
-
-//   const sortedOrders = todayOrders
-//     .sort((a: Order, b: Order) => {
-//       if (a[sort] > b[sort]) return order === ORDER.asc ? 1 : -1;
-
-//       if (a[sort] < b[sort]) return order === ORDER.asc ? -1 : 1;
-
-//       return 0;
-//     })
-//     .slice((+page - 1) * 50, +page * 50);
-
-//   return { totalOrder, orders: sortedOrders };
-// });
