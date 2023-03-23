@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 interface Props {
   page: string;
-  sort: keyof Order;
+  sort: string;
   order: string;
   isDone: string;
   keyword: string;
@@ -47,7 +47,7 @@ export default async function getOrders({
   const totalOrder = filteredOrders.length;
 
   const sortedOrders = filteredOrders
-    .sort((a: Order, b: Order) => {
+    .sort((a: any, b: any) => {
       if (a[sort] > b[sort]) return order === SORT_ORDER.asc ? 1 : -1;
       if (a[sort] < b[sort]) return order === SORT_ORDER.asc ? -1 : 1;
 
