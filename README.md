@@ -1,4 +1,4 @@
-# 원티드 프리온보딩 인턴십 N주차 기업과제 - 기업명
+# 원티드 프리온보딩 인턴십 4주차 기업과제 - 스위치원
 
 ## 📜 목차
 
@@ -16,9 +16,25 @@
 
 ## 📝 과제 소개
 
-### 진행 기간: 2023.03.13 ~ 2023.03.16 (4일)
+### **진행 기간: 2023.03.19 ~ 2023.03.23 (5일)**
 
-이 과제는.....
+> **핀테크 스타트업 스위치온의 주문내역 관리 어드민 페이지 구현 과제**
+
+### 요구 사항
+
+1. 주어진 데이터를 이용하여 주문 목록 페이지를 구현해주세요
+   - 주문 목록 페이지에는 주문에 대한 모든 정보를 표 형태로 확인할 수 있어야 합니다.
+   - 주문 목록은 페이지네이션이 구현되어야 합니다(한 페이지에 50건의 주문이 보여야 합니다)
+   - 데이터 중에서 오늘의 거래건만 보여지도록 해주세요
+     - 여기서 오늘은 **2023-03-08**일을 의미합니다.
+2. 정렬 기능을 구현해주세요
+   - 기본 정렬은 ID 기준 오름차순으로 구현해주세요
+   - 표에서 `주문번호`, `거래일 & 거래시간` 버튼을 누르면 각각 내림차순 정렬이 되도록 해주세요
+3. 주문 처리 상태에 따라 filtering 기능을 구현해주세요
+4. 고객이름을 검색할 수 있도록 해주세요
+5. 서버에 들어온 주문을 5초마다 최신화 해주세요
+   - 서버 API는 구현되어 있지 않지만, 구현되어 있다는 가정 하에 요구사항을 충족해주세요
+6. 컴포넌트에 대한 **테스트 코드**를 구현해주세요
 
 <!--  -->
 <br />
@@ -26,8 +42,8 @@
 ## 🕹️ 실행 방법
 
 ```sh
-$ git clone 레포지토리 주소
-$ cd 레포지토리 이름
+$ git clone https://github.com/wanted-pre-onboarding-internship-team-6/pre-onboarding-9th-4-6.git
+$ cd pre-onboarding-9th-4-6
 $ npm install
 $ npm run dev
 ```
@@ -37,7 +53,7 @@ $ npm run dev
 
 ## 🔗 배포 링크
 
-[바로 가기](./경로입력)
+[바로 가기](https://pre-onboarding-9th-4-6.vercel.app)
 
 <!--  -->
 <br />
@@ -58,38 +74,18 @@ $ npm run dev
 <p>
 <!-- npm -->
 <img src= "https://img.shields.io/badge/npm-CB3837?style=for-the-badge&logo=npm&logoColor=white">
-<!-- Yarn -->
-<img src= "https://img.shields.io/badge/yarn-2C8EBB?style=for-the-badge&logo=yarn&logoColor=white">
-<!-- CRA -->
-<img src= "https://img.shields.io/badge/cra-09D3AC?style=for-the-badge&logo=create-react-app&logoColor=white">
 <!-- Vite -->
 <img src= "https://img.shields.io/badge/vite-646CFF?style=for-the-badge&logo=vite&logoColor=white">
-<!-- JavasScript -->
-<img src= "https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black">
 <!-- Typescript -->
 <img src= "https://img.shields.io/badge/typescript-3178C6?style=for-the-badge&logo=typescript&logoColor=white">
 <!-- React -->
 <img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=react&logoColor=black">
-<!-- Next.js -->
-<img src="https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=next.js&logoColor=white">
-<!-- Redux Toolkit -->
-<img src="https://img.shields.io/badge/redux tooklit-764ABC?style=for-the-badge&logo=redux&logoColor=white">
-<!-- zustand -->
-<img src="https://img.shields.io/badge/zustand-000000?style=for-the-badge&logoColor=white">
-<!-- Recoil -->
-<img src="https://img.shields.io/badge/recoil-3578e5?style=for-the-badge&logoColor=white">
 <!-- React Router -->
 <img src="https://img.shields.io/badge/react router-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white">
 <!-- React Query -->
 <img src="https://img.shields.io/badge/react query-FF4154?style=for-the-badge&logo=reactquery&logoColor=white">
 <!-- Axios -->
 <img src="https://img.shields.io/badge/axios-5A29E4?style=for-the-badge&logo=axios&logoColor=white">
-<!-- Chakra UI -->
-<img src="https://img.shields.io/badge/chakra ui-319795?style=for-the-badge&logo=chakraui&logoColor=white">
-<!-- MUI -->
-<img src="https://img.shields.io/badge/mui-007FFF?style=for-the-badge&logo=mui&logoColor=white">
-<!-- styled-components -->
-<img src="https://img.shields.io/badge/styled--components-DB7093?style=for-the-badge&logo=styledcomponents&logoColor=white">
 <!-- emotion -->
 <img src="https://img.shields.io/badge/emotion-D26AC2?style=for-the-badge&logoColor=white">
 <!-- Husky -->
@@ -100,12 +96,8 @@ $ npm run dev
 <img src= "https://img.shields.io/badge/prettier-F7B93E?style=for-the-badge&logo=prettier&logoColor=black"> 
 <!-- Vercel -->
 <img src= "https://img.shields.io/badge/vercel-000000?style=for-the-badge&logo=vercel&logoColor=white">
-<!-- AWS -->
-<img src= "https://img.shields.io/badge/aws-232F3E?style=for-the-badge&logo=amazonaws&logoColor=white">
 <!-- GitHub -->
 <img src= "https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white">
-<!-- GitHub Actions -->
-<img src= "https://img.shields.io/badge/github actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white">
 <!-- Discord -->
 <img src= "https://img.shields.io/badge/discord-5865F2?style=for-the-badge&logo=discord&logoColor=white">
 <!-- notion -->
@@ -113,9 +105,11 @@ $ npm run dev
 </p>
 <!-- 선택사항: 각 기술의 선정 이유 -->
 
-- `Vite` : 선정 이유
-- `React Query` : 선정 이유
-- `Zustand` : 선정 이유
+- `Vite` : 빠른 번들링 속도와 네이티브 ESM 사용 등으로 빠르고 효율적인 웹 개발을 가능하게 함.
+- `React-query` : `useQuery`를 이용한 간편한 `fetching`, 서버 데이터 캐싱, `refetchInterval`을 통한 서버 데이터 최신화, `suspense`와 `useQueryErrorResetBoundary` 지원
+- `React-router-dom` : `useSearchParams` 를 사용하여 `filter`, `sort`, `search` 기능에 필요한 상태를 URL을 이용해 구현
+- `typescript`: 정적 타입 검사와 타입 추론을 통해 코드 안정성과 품질을 높이고 개발 생산성을 향상시켜 유지보수성을 확보
+
   <!--  -->
   <br />
 
@@ -129,7 +123,44 @@ $ npm run dev
 -->
 
 ```
-
+📦src
+ ┣ 📂api
+ ┃ ┣ 📜index.ts
+ ┃ ┗ 📜order.ts
+ ┣ 📂components
+ ┃ ┣ 📜index.ts
+ ┃ ┣ 📜Layout.tsx
+ ┃ ┣ 📜OrderTable.tsx
+ ┃ ┣ 📜OrderTableBody.tsx
+ ┃ ┣ 📜OrderTableErrorFallback.tsx
+ ┃ ┗ 📜OrderTableLoader.tsx
+ ┣ 📂constants
+ ┃ ┗ 📜index.ts
+ ┣ 📂hooks
+ ┃ ┣ 📜index.ts
+ ┃ ┣ 📜useOrders.ts
+ ┃ ┗ 📜useQueryString.ts
+ ┣ 📂pages
+ ┃ ┣ 📜ErrorPage.tsx
+ ┃ ┗ 📜index.ts
+ ┣ 📂styles
+ ┃ ┗ 📜resetCss.ts
+ ┣ 📂test
+ ┃ ┣ 📂__snapshots__
+ ┃ ┃ ┗ 📜App.test.tsx.snap
+ ┃ ┣ 📜App.test.tsx
+ ┃ ┗ 📜setup.ts
+ ┣ 📂types
+ ┃ ┗ 📜order.ts
+ ┣ 📂utils
+ ┃ ┣ 📜debounce.ts
+ ┃ ┣ 📜delay.ts
+ ┃ ┣ 📜index.ts
+ ┃ ┗ 📜throwErrorAtChance.ts
+ ┣ 📜App.tsx
+ ┣ 📜main.tsx
+ ┣ 📜Router.tsx
+ ┗ 📜vite-env.d.ts
 ```
 
 <!--  -->
@@ -137,25 +168,55 @@ $ npm run dev
 
 ## 🥇 모범 사례
 
-### 예시 1) \<Navigate to="/main" replace />
+### 쿼리스트링 사용
 
-`/`으로 접속한 유저를 `/main`으로 리다이렉트할 때 옵션값으로 `replace`를 주어 최상위 히스토리를 대체하게 했다. 이 옵션값을 주지 않으면 `/main`에서 뒤로가기를 해도 `/main`으로 돌아오게 되어 갇힌다.
+현재 페이지, 정렬 기준, 정렬 순서(오름차순, 내림차순), 주문 처리 상태와 검색 키워드를 쿼리스트링으로 저장해 관리했습니다.
 
-### 예시 2) useModal 훅
+### useQueryString
 
-<!-- 예시 코드나 이미지 등 첨부-->
+`useSeachParams`가 이미 추상화되어있는 훅이지만 여러 쿼리스트링을 추가, 삭제시 생기는 코드 중복을 해결하기위해 `useQueryString`으로 한단계 더 추상화시켰습니다.
 
-```js
-// useModal 선언부
-export default function useModal(){
-  ...
+### React query 사용
+
+`useQuery`의 `refetchInterval`을 5초로 지정해 5초마다 주문 데이터를 최신화하도록 했습니다.
+
+### Suspense와 react-error-boundary
+
+`Suspense`와 `ErrorBoundary`를 이용래 로딩, 에러 상태를 선언적으로 관리하고, 에러 발생시 UI에 재시도 버튼을 만들어 에러를 초기화할 수 있도록 했습니다.
+
+### 서버 API가 구현된듯이 코드 구현
+
+서버 API가 구현되어있는 것처럼 하기 위해 데이터 fetch 레이어에서 쿼리 스트링의 페이지 번호, 정렬 기준, 정렬 순서를 사용해 데이터를 가공하고 반환했습니다.
+
+### 디바운스 적용
+
+고객 이름 검색창에 디바운스를 적용해서 검색어 입력시의 API 호출 횟수를 줄였습니다.
+
+```ts
+export default function debounce<T extends (...args: any[]) => void>(
+  callback: T,
+  timeout: number,
+): (...args: Parameters<T>) => void {
+  let timer: ReturnType<typeof setTimeout>;
+
+  return function (this: any, ...args: Parameters<T>): void {
+    clearTimeout(timer);
+    timer = setTimeout(() => callback.apply(this, args), timeout);
+  };
 }
-
-// useModal 호출부
-const { modal, openModal, closeModal } = useModal();
 ```
 
-모달을 관리하는 로직을 `useModal` 훅으로 분리해서 어디서나 모달을 조작할 수 있게 했다.
+### 9가지 테스트 적용
+
+- OrderTable 컴포넌트 렌더링 상태 검사
+- OrderTable 컴포넌트 select 요소 렌더링 상태 검사
+- 페이지네이션 버튼 작동 상태 검사
+- 버튼 개수가 페이지 개수가 일치하는 지 검사
+- 현재 페이지를 나타내는 버튼이 비활성화 되는지 검사
+- 사용자가 5번 페이지 눌렀을때, 5번 페이지로 이동하는 함수가 작동하는지 검사
+- mockDatas의 데이터들이 테이블 요소에 렌더링 되는지 검사
+- 주문목록 데이터 객체의 타입 검사
+- mockDatas의 transaction_time에 2023-03-08이 포함 된 데이터 수 검사
 
 <br />
 
@@ -167,11 +228,11 @@ const { modal, openModal, closeModal } = useModal();
 
 ### 2. 이슈 발행
 
-분석한 요구사항을 기간에 맞게 분배한 후 각 날짜에 해당하는 이슈([템플릿](.github/ISSUE_TEMPLATE/requirement-template.md))를 생성합니다.
+분석한 요구사항을 기간에 맞게 분배한 후 각 날짜에 해당하는 ([이슈](https://github.com/wanted-pre-onboarding-internship-team-6/pre-onboarding-9th-4-6/issues))를 생성합니다.
 
 ### 3. 구현 & PR
 
-각자 해당 날짜의 이슈를 코드로 구현하고 커밋([git 컨벤션](.gitmessage.txt))하고 PR([템플릿](.github/PULL_REQUEST_TEMPLATE.md))을 올립니다.
+각자 해당 날짜의 이슈를 코드로 구현하고 커밋([git 컨벤션](https://github.com/wanted-pre-onboarding-internship-team-6/pre-onboarding-9th-4-6/blob/main/.gitmessage.txt))하고 ([PR](https://github.com/wanted-pre-onboarding-internship-team-6/pre-onboarding-9th-4-6/pulls))을 올립니다.
 
 ### 4. 코드 리뷰
 
