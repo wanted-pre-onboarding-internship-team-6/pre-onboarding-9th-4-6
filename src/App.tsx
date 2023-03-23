@@ -1,20 +1,39 @@
-import { useEffect } from 'react';
+import { Suspense, useEffect } from 'react';
 
-import { useSearchParams } from 'react-router-dom';
+import { useQueryErrorResetBoundary } from '@tanstack/react-query';
+import { ErrorBoundary } from 'react-error-boundary';
 
-import { OrderTable } from '@/components';
-import { INITIAL_PAGE, ORDER_KEY, QUERY_STRING, SORT_ORDER } from '@/constants';
+import {
+  OrderTable,
+  OrderTableErrorFallback,
+  OrderTableLoader,
+} from '@/components';
+import { INITIAL_PAGE, ORDER_KEY, SORT_ORDER } from '@/constants';
+import { useQueryString } from '@/hooks';
 
 export default function App() {
-  const [searchParams, setSearchParams] = useSearchParams();
-  const { page, sort, order } = Object.fromEntries([...searchParams]);
+  const { getQueryString, setQueryString } = useQueryString();
+  const { page, sort, order } = getQueryString();
+  const { reset } = useQueryErrorResetBoundary();
 
   useEffect(() => {
-    if (!page) searchParams.set(QUERY_STRING.page, INITIAL_PAGE);
-    if (!sort) searchParams.set(QUERY_STRING.sort, ORDER_KEY.id);
-    if (!order) searchParams.set(QUERY_STRING.order, SORT_ORDER.asc);
-    setSearchParams(searchParams);
-  }, [order, page, sort, searchParams, setSearchParams]);
+    if (!page) setQueryString({ page: INITIAL_PAGE });
+    if (!sort) setQueryString({ sort: ORDER_KEY.id });
+    if (!order) setQueryString({ order: SORT_ORDER.asc });
+  }, [order, page, sort, setQueryString]);
 
-  return <OrderTable />;
+  return (
+    <ErrorBoundary
+      onReset={reset}
+      fallbackRender={({ error, resetErrorBoundary }) => (
+        <OrderTableErrorFallback
+          error={error}
+          resetErrorBoundary={resetErrorBoundary}
+        />
+      )}>
+      <Suspense fallback={<OrderTableLoader />}>
+        <OrderTable />
+      </Suspense>
+    </ErrorBoundary>
+  );
 }

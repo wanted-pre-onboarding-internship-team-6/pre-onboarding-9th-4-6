@@ -13,15 +13,12 @@ import { useOrders, useQueryString } from '@/hooks';
 import { debounce } from '@/utils';
 
 import OrderTableBody from './OrderTableBody';
-import OrderTableLoader from './OrderTableLoader';
 
 export default function OrderTable() {
-  const { isLoading, isError, orderData } = useOrders();
+  const customerSearchRef = useRef<HTMLInputElement>(null);
+  const { orderData } = useOrders();
   const { getQueryString, setQueryString, deleteQueryString } =
     useQueryString();
-
-  const customerSearchRef = useRef<HTMLInputElement>(null);
-
   const { page, sort, order, isDone, keyword } = getQueryString();
 
   function sortOrders(nextSort: string, currOrder: string) {
@@ -52,14 +49,11 @@ export default function OrderTable() {
 
   const sortIndicator = order === SORT_ORDER.asc ? '▲' : '▼';
 
+  const totalPageCount = Math.ceil(orderData.totalOrder / ORDER_PER_PAGE);
+
   useEffect(() => {
     if (customerSearchRef.current && keyword) customerSearchRef.current.focus();
   }, [keyword]);
-
-  if (isLoading) return <OrderTableLoader />;
-  if (isError || !orderData) return <div>Error</div>;
-
-  const totalPageCount = Math.ceil(orderData.totalOrder / ORDER_PER_PAGE);
 
   return (
     <>
@@ -104,7 +98,7 @@ export default function OrderTable() {
             <th>가격</th>
           </Tr>
         </Thead>
-        <OrderTableBody />
+        <OrderTableBody orders={orderData.orders} />
       </Table>
       <Pagination>
         {Array.from({ length: totalPageCount }).map((_, i) => (
